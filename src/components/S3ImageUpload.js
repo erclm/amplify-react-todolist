@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Avatar } from "@material-ui/core";
 import { v4 as uuid } from "uuid";
 
-export default class S3ImageUpload extends React.Component {
+export default class S3ImageUpload extends Component {
   constructor(props) {
     super(props);
     this.state = { uploading: false };
@@ -10,6 +10,7 @@ export default class S3ImageUpload extends React.Component {
 
   uploadFile = async file => {
     const fileName = uuid();
+    console.log(fileName);
   };
 
   onChange = async e => {
