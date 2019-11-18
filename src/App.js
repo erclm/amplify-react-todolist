@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import IndexTodos from "./components/indexTodos.js";
+import AddTodo from "./components/addTodo.js";
+import Paper from "@material-ui/core/Paper";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(5, 2)
+  }
+}));
 
 function App() {
+  const classes = useStyles();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <React.Fragment>
+          <CssBaseline />
+          <Container
+            fixed
+            maxWidth="md"
+            style={{ height: "100vh", paddingTop: 20 }}
+          >
+            <Paper className={classes.root}>
+              <Switch>
+                <Route path="/" exact component={IndexTodos} />
+                <Route path="/addTodo" component={AddTodo} />
+              </Switch>
+            </Paper>
+          </Container>
+        </React.Fragment>
+      </Router>
     </div>
   );
 }
