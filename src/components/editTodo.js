@@ -32,7 +32,7 @@ function EditTodo(props) {
   const classes = useStyles();
   const [mySubmitting, setMySubmitting] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [item, setItem] = useState({ id: "", description: "", dateAt: "" });
+  const [item, setItem] = useState({ id: "", username: "", description: "", dateAt: "", image: null });
   let history = useHistory();
   useEffect(() => {
     fetchItem();
