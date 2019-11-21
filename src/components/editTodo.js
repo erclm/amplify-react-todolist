@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -28,23 +28,31 @@ const validationSchema = Yup.object().shape({
     .required("Must enter a description")
 });
 
-function AddTodo() {
+function EditTodo(props) {
   const classes = useStyles();
   const [mySubmitting, setMySubmitting] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [item, setItem] = useState({ id: "", description: "", dateAt: "" });
   let history = useHistory();
+  useEffect(() => {
+    fetchItem();
+  }, []);
+
+  const fetchItem = async () => {
+    console.log(props.match.params.idTodo);
+  };
 
   const handleDateChange = date => {
     setSelectedDate(date);
   };
 
   return (
-    <div className="AddTodo">
+    <div className="EditTodo">
       <Typography variant="h5" component="h1" gutterBottom>
-        Add Todo
+        Edit Todo
       </Typography>
       <Formik
-        initialValues={{ description: "" }}
+        initialValues={{ description: item.description }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
           console.log(values);
@@ -118,4 +126,4 @@ function AddTodo() {
   );
 }
 
-export default AddTodo;
+export default EditTodo;

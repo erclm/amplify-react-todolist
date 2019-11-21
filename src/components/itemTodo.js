@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Button,
   IconButton,
   Grid,
   Avatar,
   Card,
-  CardActions,
   Typography,
+  CardActions,
   Divider
 } from "@material-ui/core";
-import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import TimeAgo from "react-timeago";
+import clsx from "clsx";
+import VolumeUpIcon from "@material-ui/icons/VolumeUp";
+import TranslateIcon from "@material-ui/icons/Translate";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   itemTodo: {
@@ -24,19 +28,23 @@ const useStyles = makeStyles(theme => ({
   listen: {
     marginLeft: 5
   },
-  dateAt: {
-    marginTop: theme.spacing(0.5)
-  },
   translate: {
     marginTop: 15
+  },
+  expand: {
+    marginLeft: "auto"
+  },
+  expandOpen: {
+    transform: "rotate(180deg)"
   }
 }));
 
 function ItemTodo(props) {
+  console.log(props);
   const classes = useStyles();
-
   const [showTranslate, setShowTranslate] = useState(false);
   const [translatedText, setTranlatedText] = useState("");
+  let history = useHistory();
 
   const handleClickListenOriginal = event => {
     console.log("Listen Original");
@@ -44,6 +52,15 @@ function ItemTodo(props) {
 
   const handleClickListenTranslate = event => {
     console.log("Listen Translate");
+  };
+
+  const handleClickDelete = event => {
+    console.log("Delete todo");
+  };
+
+  const handleClickEdit = event => {
+    console.log("Edit todo");
+    history.push("/editTodo/" + props.idTodo);
   };
 
   const handleClickTranslate = event => {
@@ -75,16 +92,6 @@ function ItemTodo(props) {
               <VolumeUpIcon />
             </IconButton>
           </Typography>
-          <CardActions>
-            <TimeAgo date={props.date} className={classes.dateAt} />
-            <Button
-              className={classes.button}
-              size="small"
-              onClick={handleClickTranslate}
-            >
-              Translate
-            </Button>
-          </CardActions>
           <div style={showTranslate ? {} : { display: "none" }}>
             <Divider />
             <Typography variant="h6" gutterBottom className={classes.translate}>
@@ -100,6 +107,22 @@ function ItemTodo(props) {
               </IconButton>
             </Typography>
           </div>
+          <CardActions disableSpacing>
+            <TimeAgo date={props.date} className={classes.dateAt} />
+            <IconButton
+              className={clsx(classes.expand)}
+              aria-label="Delete"
+              onClick={handleClickDelete}
+            >
+              <DeleteIcon />
+            </IconButton>
+            <IconButton aria-label="Edit" onClick={handleClickEdit}>
+              <EditIcon />
+            </IconButton>
+            <IconButton aria-label="Translate" onClick={handleClickTranslate}>
+              <TranslateIcon />
+            </IconButton>
+          </CardActions>
         </Grid>
       </Grid>
     </Card>

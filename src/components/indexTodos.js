@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Fab } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
+import AddIcon from "@material-ui/icons/Add";
 
 import ItemTodo from "./itemTodo.js";
 
@@ -28,7 +28,6 @@ const useStyles = makeStyles(theme => ({
 
 function IndexTodos() {
   const classes = useStyles();
-
   useEffect(() => {
     fetchItems();
   }, []);
@@ -75,6 +74,7 @@ function IndexTodos() {
           <ItemTodo
             key={item.id}
             description={item.description}
+            idTodo={item.id}
             date={item.dateAt}
           />
         ))}
