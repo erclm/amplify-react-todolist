@@ -41,6 +41,11 @@ function IndexTodos() {
     console.log(items);
   };
 
+  const handleDelete = event => {
+    console.log("onDelete Item");
+    console.log(event);
+  };
+
   return (
     <div className="IndexTodos">
       <div className={classes.root}>
@@ -73,8 +78,8 @@ function IndexTodos() {
         {items.map(item => (
           <ItemTodo
             key={item.id}
-            description={item.description}
-            idTodo={item.id}
+            item={item}
+            onDelete={handleDelete}
             date={item.dateAt}
           />
         ))}

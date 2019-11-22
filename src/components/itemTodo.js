@@ -54,13 +54,9 @@ function ItemTodo(props) {
     console.log("Listen Translate");
   };
 
-  const handleClickDelete = event => {
-    console.log("Delete todo");
-  };
-
   const handleClickEdit = event => {
     console.log("Edit todo");
-    history.push("/editTodo/" + props.idTodo);
+    history.push("/editTodo/" + props.item.idTodo);
   };
 
   const handleClickTranslate = event => {
@@ -81,7 +77,7 @@ function ItemTodo(props) {
         </Grid>
         <Grid item xs zeroMinWidth>
           <Typography variant="h6" gutterBottom>
-            {props.description}
+            {props.item.description}
             <IconButton
               id="listenOriginal"
               className={classes.listen}
@@ -108,11 +104,11 @@ function ItemTodo(props) {
             </Typography>
           </div>
           <CardActions disableSpacing>
-            <TimeAgo date={props.date} className={classes.dateAt} />
+            <TimeAgo date={props.item.dateAt} className={classes.dateAt} />
             <IconButton
               className={clsx(classes.expand)}
               aria-label="Delete"
-              onClick={handleClickDelete}
+              onClick={() => props.onDelete(props.item)}
             >
               <DeleteIcon />
             </IconButton>
