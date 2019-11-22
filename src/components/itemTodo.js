@@ -56,7 +56,7 @@ function ItemTodo(props) {
 
   const handleClickEdit = event => {
     console.log("Edit todo");
-    history.push("/editTodo/" + props.item.idTodo);
+    history.push("/editTodo/" + props.item.id);
   };
 
   const handleClickTranslate = event => {
