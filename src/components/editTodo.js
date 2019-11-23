@@ -46,6 +46,10 @@ function EditTodo(props) {
     setSelectedDate(date);
   };
 
+  async function callEditTodo(item) {  
+    history.push("/");
+  }
+
   return (
     <div className="EditTodo">
       <Typography variant="h5" component="h1" gutterBottom>
@@ -57,9 +61,9 @@ function EditTodo(props) {
         onSubmit={(values, { resetForm }) => {
           console.log(values);
           console.log(selectedDate.getTime());
+          callEditTodo({})
           setMySubmitting(true);
           resetForm();
-          history.push("/");
         }}
       >
         {({

@@ -38,6 +38,10 @@ function AddTodo() {
     setSelectedDate(date);
   };
 
+  async function callCreateTodo(item) {
+    history.push("/");
+  }
+
   return (
     <div className="AddTodo">
       <Typography variant="h5" component="h1" gutterBottom>
@@ -49,9 +53,9 @@ function AddTodo() {
         onSubmit={(values, { resetForm }) => {
           console.log(values);
           console.log(selectedDate.getTime());
+          callCreateTodo({  });
           setMySubmitting(true);
           resetForm();
-          history.push("/");
         }}
       >
         {({
