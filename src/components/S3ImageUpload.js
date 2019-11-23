@@ -34,7 +34,7 @@ export default class S3ImageUpload extends Component {
         <input
           id="add-image-file-input"
           type="file"
-          accept="image/*"
+          accept="image/jpeg"
           //multiple
           onChange={this.onChange}
           style={{ display: "none" }}
