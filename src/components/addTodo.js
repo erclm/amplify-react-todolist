@@ -93,7 +93,7 @@ function AddTodo() {
                 />
               </div>
             </MuiPickersUtilsProvider>
-            <S3ImageUpload albumId="xccccc" />
+            <S3ImageUpload />
             <Button
               variant="contained"
               className={classes.button}
