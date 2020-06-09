@@ -8,6 +8,11 @@ import EditTodo from "./components/editTodo.js";
 import Paper from "@material-ui/core/Paper";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { Auth } from 'aws-amplify';
+import awsconfig from './aws-exports';
+import { withAuthenticator } from 'aws-amplify-react';
+Auth.configure(awsconfig);
+
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(5, 2)

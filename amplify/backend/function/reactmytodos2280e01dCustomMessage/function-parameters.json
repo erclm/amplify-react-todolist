@@ -1,0 +1,24 @@
+{
+    "trigger": true,
+    "modules": [
+        "verification-link"
+    ],
+    "parentResource": "reactmytodos2280e01d",
+    "functionName": "reactmytodos2280e01dCustomMessage",
+    "resourceName": "reactmytodos2280e01dCustomMessage",
+    "parentStack": "auth",
+    "triggerEnvs": [
+        {
+            "key": "RESOURCENAME",
+            "value": "resourceName"
+        }
+    ],
+    "triggerDir": "/home/ec2-user/.nvm/versions/node/v10.20.1/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/CustomMessage",
+    "triggerTemplate": "CustomMessage.json.ejs",
+    "roleName": "reactmytodos2280e01dCustomMessage",
+    "skipEdit": true,
+    "REDIRECTURL": "https://github.com/ereeq/amplify-react-todolist",
+    "EMAILSUBJECT": "Todolist Email Confirmation",
+    "EMAILMESSAGE": "Confirm your email...",
+    "RESOURCENAME": "resourceName"
+}
