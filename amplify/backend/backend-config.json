@@ -67,5 +67,17 @@
 				}
 			]
 		}
+	},
+	"predictions": {
+		"translateText174f5c0d": {
+			"providerPlugin": "awscloudformation",
+			"service": "Translate",
+			"convertType": "translateText"
+		},
+		"speechGenerator9712452f": {
+			"providerPlugin": "awscloudformation",
+			"service": "Polly",
+			"convertType": "speechGenerator"
+		}
 	}
 }

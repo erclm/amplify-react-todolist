@@ -17,12 +17,16 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useHistory } from "react-router-dom";
 
+import Amplify, {Predictions} from 'aws-amplify';
+import {AmazonAIPredictionsProvider} from '@aws-amplify/predictions';
 import { S3Image } from 'aws-amplify-react';
 //analytics
 import Analytics from '@aws-amplify/analytics';
 import awsconfig from '../aws-exports';
 Analytics.configure(awsconfig);
 //p
+Amplify.configure(awsconfig);
+Amplify.addPluggable(new AmazonAIPredictionsProvider());
 
 const useStyles = makeStyles(theme => ({
   itemTodo: {
@@ -55,12 +59,56 @@ function ItemTodo(props) {
 
   const handleClickListenOriginal = event => {
     console.log("Listen Original");
+    //tts
+    Predictions.convert({
+      textToSpeech:{
+        source:{
+          text:props.item.description
+        }
+      }
+    })
+    .then(result => {
+      let AudioContext = window.AudioContext || window.webkitAudioContext;
+      console.log({ AudioContext });
+      const audioCtx = new AudioContext(); 
+      const source = audioCtx.createBufferSource();
+      audioCtx.decodeAudioData(result.audioStream, (buffer) => {
+        source.buffer = buffer;
+        source.connect(audioCtx.destination);
+        source.start(0);
+      }, (err) => console.log({err}));
+    })
+    .catch(err => console.log(err));
+    
     //analytics
     sendSpeechAnalytics("English");
   };
 
   const handleClickListenTranslate = event => {
     console.log("Listen Translate");
+    //tts
+    Predictions.convert({
+      textToSpeech:{
+        source:{
+          text:translatedText
+        },
+        voiceId: "Mia",
+        languageCode: "es-MX"
+      }
+    })
+    .then(result => {
+      let AudioContext = window.AudioContext || window.webkitAudioContext;
+      console.log({ AudioContext });
+      const audioCtx = new AudioContext(); 
+      const source = audioCtx.createBufferSource();
+      audioCtx.decodeAudioData(result.audioStream, (buffer) => {
+        source.buffer = buffer;
+        source.connect(audioCtx.destination);
+        source.start(0);
+      }, (err) => console.log({err}));
+    })
+    .catch(err => console.log(err));
+    
     //analytics
     sendSpeechAnalytics("Spanish");
   };
@@ -76,7 +124,16 @@ function ItemTodo(props) {
       setTranlatedText("");
     } else {
       setShowTranslate(true);
-      setTranlatedText("Ejemplo de texto.");
+      Predictions.convert({
+        translateText: {
+          source: {
+            text: props.item.description,
+            // language : "es" // defaults configured on aws-exports.js
+            // supported languages https://docs.aws.amazon.com/translate/latest/dg/how-it-works.html#how-it-works-language-codes
+          },
+        }
+      }).then(result => setTranlatedText(result.text))
+        .catch(err => setTranlatedText(JSON.stringify(err, null, 2)));
       //analytics
       sendTranslateAnalytics();
     }
