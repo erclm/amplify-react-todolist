@@ -1,0 +1,21 @@
+{
+    "appName": "retodos",
+    "roleName": "pinpointLambdaRole2aeb0635",
+    "cloudformationPolicyName": "cloudformationPolicy2aeb0635",
+    "cloudWatchPolicyName": "cloudWatchPolicy2aeb0635",
+    "pinpointPolicyName": "pinpointPolicy2aeb0635",
+    "authPolicyName": "pinpoint_amplify_2aeb0635",
+    "unauthPolicyName": "pinpoint_amplify_2aeb0635",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

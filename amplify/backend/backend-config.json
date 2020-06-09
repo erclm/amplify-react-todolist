@@ -22,5 +22,11 @@
 				}
 			]
 		}
+	},
+	"analytics": {
+		"retodos": {
+			"service": "Pinpoint",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }

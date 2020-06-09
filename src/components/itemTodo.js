@@ -17,6 +17,12 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useHistory } from "react-router-dom";
 
+//analytics
+import Analytics from '@aws-amplify/analytics';
+import awsconfig from '../aws-exports';
+Analytics.configure(awsconfig);
+//p
+
 const useStyles = makeStyles(theme => ({
   itemTodo: {
     padding: 15,
@@ -48,10 +54,14 @@ function ItemTodo(props) {
 
   const handleClickListenOriginal = event => {
     console.log("Listen Original");
+    //analytics
+    sendSpeechAnalytics("English");
   };
 
   const handleClickListenTranslate = event => {
     console.log("Listen Translate");
+    //analytics
+    sendSpeechAnalytics("Spanish");
   };
 
   const handleClickEdit = event => {
@@ -66,9 +76,25 @@ function ItemTodo(props) {
     } else {
       setShowTranslate(true);
       setTranlatedText("Ejemplo de texto.");
+      //analytics
+      sendTranslateAnalytics();
     }
   };
+  
+  //analytics
+  const sendTranslateAnalytics = async () => {
+    Analytics.record({ name: 'translate' }).then( (evt) => {
+            console.log("Event Submitted" + JSON.stringify(evt));
+        });
+  };
 
+  const sendSpeechAnalytics = async (value) => {
+    Analytics.record({ name: 'speech', attributes: { lang: value } }).then( (evt) => {
+            console.log("Event Submitted" + JSON.stringify(evt));
+        });
+  };
+  //p
+  
   return (
     <Card className={classes.itemTodo}>
       <Grid container wrap="nowrap" spacing={2}>

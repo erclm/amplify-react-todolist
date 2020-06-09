@@ -1,6 +1,6 @@
 {
     "identityPoolName": "reactmytodos2280e01d_identitypool_2280e01d",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "reactm2280e01d",
     "userPoolName": "reactmytodos2280e01d_userpool_2280e01d",
     "autoVerifiedAttributes": [
