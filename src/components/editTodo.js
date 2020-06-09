@@ -9,6 +9,14 @@ import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import S3ImageUpload from "./S3ImageUpload.js";
 import { useHistory } from "react-router-dom";
 
+//amplify
+import { Auth } from 'aws-amplify'
+import { API, graphqlOperation } from 'aws-amplify';
+import { getTodo } from '../graphql/queries';
+import { updateTodo } from '../graphql/mutations';
+import awsconfig from '../aws-exports';
+API.configure(awsconfig);
+
 const useStyles = makeStyles(theme => ({
   textField: {
     marginTop: theme.spacing(1),
@@ -33,6 +41,7 @@ function EditTodo(props) {
   const [mySubmitting, setMySubmitting] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [item, setItem] = useState({ id: "", username: "", description: "", dateAt: "", image: null });
+  const [user, setUser] = useState({});
   let history = useHistory();
   useEffect(() => {
     fetchItem();
@@ -40,6 +49,17 @@ function EditTodo(props) {
 
   const fetchItem = async () => {
     console.log(props.match.params.idTodo);
+    try {
+      const data = await Auth.currentUserPoolUser();
+      const userInfo = { username: data.username, ...data.attributes, };
+      setUser(userInfo);
+      const response = await API.graphql(graphqlOperation(getTodo, {
+          id: props.match.params.idTodo
+      }));
+      console.log(response.data.getTodo.dateAt);
+      setSelectedDate(new Date(response.data.getTodo.dateAt));
+      setItem({ id:response.data.getTodo.id, username: response.data.getTodo.username, description: response.data.getTodo.description });
+    } catch (err) { console.log('error: ', err) }
   };
 
   const handleDateChange = date => {
@@ -47,7 +67,13 @@ function EditTodo(props) {
   };
 
   async function callEditTodo(item) {  
-    history.push("/");
+    try {
+      await API.graphql(graphqlOperation(updateTodo, { input: item }))
+      console.log('todo successfully updated!')
+      history.push("/")
+    } catch (err) {
+      console.log("error: ", err)
+    }
   }
 
   return (
@@ -56,12 +82,13 @@ function EditTodo(props) {
         Edit Todo
       </Typography>
       <Formik
+        enableReinitialize
         initialValues={{ description: item.description }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
           console.log(values);
           console.log(selectedDate.getTime());
-          callEditTodo({})
+          callEditTodo({ id: item.id, username: user.username, description: values.description, dateAt: selectedDate.getTime(), image: null });
           setMySubmitting(true);
           resetForm();
         }}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -8,6 +8,13 @@ import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import S3ImageUpload from "./S3ImageUpload.js";
 import { useHistory } from "react-router-dom";
+
+//amplify
+import { Auth } from 'aws-amplify'
+import { API, graphqlOperation } from 'aws-amplify';
+import { createTodo } from '../graphql/mutations';
+import awsconfig from '../aws-exports';
+API.configure(awsconfig);
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -32,14 +39,33 @@ function AddTodo() {
   const classes = useStyles();
   const [mySubmitting, setMySubmitting] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [user, setUser] = useState({});
   let history = useHistory();
+  useEffect(() => {
+    checkUser();
+  }, []);
+  
+  async function checkUser() {
+    try {
+      const data = await Auth.currentUserPoolUser();
+      const userInfo = { username: data.username, ...data.attributes, };
+      setUser(userInfo);
+      console.log(userInfo);
+    } catch (err) { console.log('error: ', err) }
+  }
 
   const handleDateChange = date => {
     setSelectedDate(date);
   };
 
   async function callCreateTodo(item) {
-    history.push("/");
+    try {
+      await API.graphql(graphqlOperation(createTodo, { input: item }))
+      console.log('todo successfully created!')
+      history.push("/")
+    } catch (err) {
+      console.log("error: ", err)
+    }
   }
 
   return (
@@ -53,6 +79,7 @@ function AddTodo() {
         onSubmit={(values, { resetForm }) => {
           console.log(values);
           console.log(selectedDate.getTime());
+          callCreateTodo({ username: user.username, description: values.description, dateAt: selectedDate.getTime() });
           callCreateTodo({  });
           setMySubmitting(true);
           resetForm();
