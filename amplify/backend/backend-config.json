@@ -4,6 +4,11 @@
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
+		},
+		"S3Triggera7f5ff10": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true
 		}
 	},
 	"auth": {
@@ -44,6 +49,23 @@
 					}
 				}
 			}
+		}
+	},
+	"storage": {
+		"s347398ed4": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "S3Triggera7f5ff10",
+					"attributes": [
+						"Name",
+						"Arn",
+						"LambdaExecutionRole"
+					]
+				}
+			]
 		}
 	}
 }

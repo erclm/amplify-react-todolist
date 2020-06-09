@@ -42,6 +42,7 @@ function EditTodo(props) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [item, setItem] = useState({ id: "", username: "", description: "", dateAt: "", image: null });
   const [user, setUser] = useState({});
+  const [image, setImage] = useState("");
   let history = useHistory();
   useEffect(() => {
     fetchItem();
@@ -75,6 +76,12 @@ function EditTodo(props) {
       console.log("error: ", err)
     }
   }
+  
+  const handleLoadImage = event => {
+    console.log("Hanlde onLoadImage");
+    console.log(event);
+    setImage(event);
+  };
 
   return (
     <div className="EditTodo">
@@ -88,7 +95,7 @@ function EditTodo(props) {
         onSubmit={(values, { resetForm }) => {
           console.log(values);
           console.log(selectedDate.getTime());
-          callEditTodo({ id: item.id, username: user.username, description: values.description, dateAt: selectedDate.getTime(), image: null });
+          callEditTodo({ id: item.id, username: user.username, description: values.description, dateAt: selectedDate.getTime(), image: image });
           setMySubmitting(true);
           resetForm();
         }}
@@ -132,7 +139,7 @@ function EditTodo(props) {
                 />
               </div>
             </MuiPickersUtilsProvider>
-            <S3ImageUpload />
+            <S3ImageUpload onLoadImage={handleLoadImage} />
             <Button
               variant="contained"
               className={classes.button}

@@ -17,6 +17,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useHistory } from "react-router-dom";
 
+import { S3Image } from 'aws-amplify-react';
 //analytics
 import Analytics from '@aws-amplify/analytics';
 import awsconfig from '../aws-exports';
@@ -99,7 +100,13 @@ function ItemTodo(props) {
     <Card className={classes.itemTodo}>
       <Grid container wrap="nowrap" spacing={2}>
         <Grid item>
-          <Avatar>W</Avatar>
+          <Avatar>
+            <S3Image 
+                imgKey={props.item.image}
+                theme={{ photoImg: { height: '42px' } }}
+                style={{display: 'inline-block', 'paddingRight': '5px'}}
+              />
+          </Avatar>
         </Grid>
         <Grid item xs zeroMinWidth>
           <Typography variant="h6" gutterBottom>

@@ -40,6 +40,7 @@ function AddTodo() {
   const [mySubmitting, setMySubmitting] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [user, setUser] = useState({});
+  const [image, setImage] = useState("");
   let history = useHistory();
   useEffect(() => {
     checkUser();
@@ -67,6 +68,12 @@ function AddTodo() {
       console.log("error: ", err)
     }
   }
+  
+  const handleLoadImage = event => {
+    console.log("Hanlde onLoadImage");
+    console.log(event);
+    setImage(event);
+  };
 
   return (
     <div className="AddTodo">
@@ -79,8 +86,9 @@ function AddTodo() {
         onSubmit={(values, { resetForm }) => {
           console.log(values);
           console.log(selectedDate.getTime());
-          callCreateTodo({ username: user.username, description: values.description, dateAt: selectedDate.getTime() });
-          callCreateTodo({  });
+    
+          callCreateTodo({ username: user.username, description: values.description, dateAt: selectedDate.getTime(), image: image });
+          
           setMySubmitting(true);
           resetForm();
         }}
@@ -124,7 +132,7 @@ function AddTodo() {
                 />
               </div>
             </MuiPickersUtilsProvider>
-            <S3ImageUpload />
+            <S3ImageUpload onLoadImage={handleLoadImage} />
             <Button
               variant="contained"
               className={classes.button}
